@@ -14,8 +14,8 @@ data "aws_rds_engine_version" "postgresql" {
 #####################################################
 locals {
   account_id = data.aws_caller_identity.current.account_id
-  name   = "warp-app"
-  dbname = "warpdb"
+  name       = "warp-app"
+  dbname     = "warpdb"
 
   vpc_cidr                     = "10.0.0.0/16"
   azs                          = slice(data.aws_availability_zones.available.names, 0, 3)
@@ -24,10 +24,10 @@ locals {
   container_name = "nginx"
   container_port = 80
 
-  db_user = module.aurora_postgresql_v2.cluster_master_username
+  db_user     = module.aurora_postgresql_v2.cluster_master_username
   db_password = module.aurora_postgresql_v2.cluster_master_password
   db_endpoint = module.aurora_postgresql_v2.cluster_endpoint
-  db_name = module.aurora_postgresql_v2.cluster_database_name
+  db_name     = module.aurora_postgresql_v2.cluster_database_name
 
   tags = {
     Terraform   = "true"
@@ -42,15 +42,15 @@ locals {
 module "aurora_postgresql_v2" {
   source = "./modules/rds"
 
-  name              = "${local.name}-postgresqlv2"
-  engine            = data.aws_rds_engine_version.postgresql.engine
-  engine_mode       = "provisioned"
-  engine_version    = data.aws_rds_engine_version.postgresql.version
-  storage_encrypted = true
-  master_username   = "root"
-  master_password   = random_password.master.result
+  name                        = "${local.name}-postgresqlv2"
+  engine                      = data.aws_rds_engine_version.postgresql.engine
+  engine_mode                 = "provisioned"
+  engine_version              = data.aws_rds_engine_version.postgresql.version
+  storage_encrypted           = true
+  master_username             = "root"
+  master_password             = random_password.master.result
   manage_master_user_password = false
-  database_name     = local.dbname
+  database_name               = local.dbname
 
   vpc_id               = module.vpc.vpc_id
   db_subnet_group_name = module.vpc.database_subnet_group_name
@@ -184,19 +184,19 @@ module "ecs_service" {
       essential = true
       image     = "${var.app_image_name}:${var.app_image_tag}"
       environment = [{
-          name = "WARP_DATABASE"
-          value = "postgresql://${local.db_user}:${local.db_password}@${local.db_endpoint}:5432/${local.db_name}"
+        name  = "WARP_DATABASE"
+        value = "postgresql://${local.db_user}:${local.db_password}@${local.db_endpoint}:5432/${local.db_name}"
         },
         {
-          name = "WARP_SECRET_KEY"
+          name  = "WARP_SECRET_KEY"
           value = random_password.api_key.result
         },
         {
-          name = "WARP_DATABASE_INIT_SCRIPT"
+          name  = "WARP_DATABASE_INIT_SCRIPT"
           value = "[\"sql/schema.sql\",\"sql/sample_data.sql\"]"
         },
         {
-          name = "WARP_LANGUAGE_FILE"
+          name  = "WARP_LANGUAGE_FILE"
           value = "i18n/en.js"
         },
       ]

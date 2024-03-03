@@ -3,12 +3,12 @@ output "db-host" {
 }
 
 output "db-username" {
-  value = module.aurora_postgresql_v2.cluster_master_username
+  value     = module.aurora_postgresql_v2.cluster_master_username
   sensitive = true
 }
 
 output "db-password" {
-  value = module.aurora_postgresql_v2.cluster_master_password
+  value     = module.aurora_postgresql_v2.cluster_master_password
   sensitive = true
 }
 
