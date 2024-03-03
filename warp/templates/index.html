@@ -1,0 +1,18 @@
+{% extends 'base_logged.html' %}
+
+{% block header %}
+    {{ super() }}
+{% endblock %}
+
+
+{% block content %}
+    {{ super() }}
+
+    <div class="index_container">
+        <div>
+        <img src="{{ url_for('static', filename='images/logo-color.png') }}"><br>
+        Workspace Autonomous Reservation Program
+        </div>
+    </div>
+
+{% endblock %}

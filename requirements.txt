@@ -1,0 +1,7 @@
+flask == 2.2.*
+jsonschema
+xlsxwriter
+peewee
+psycopg2
+orjson
+ldap3

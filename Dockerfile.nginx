@@ -1,0 +1,3 @@
+FROM nginx
+
+COPY ./res/nginx-ecs.conf /etc/nginx/nginx.conf

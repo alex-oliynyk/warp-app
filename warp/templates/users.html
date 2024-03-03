@@ -1,0 +1,84 @@
+{% extends 'base_logged.html' %}
+
+{% block header %}
+    {{ super() }}
+
+<script>
+    window.warpGlobals.URLs['usersList'] = "{{ url_for('xhr.users.list') }}";
+    window.warpGlobals.URLs['usersEdit'] = "{{ url_for('xhr.users.edit') }}";
+    window.warpGlobals.URLs['usersDelete'] = "{{ url_for('xhr.users.delete') }}";
+    window.warpGlobals.URLs['userGroups'] = "{{ url_for('xhr.users.groups', login='__LOGIN__') }}";
+</script>
+
+{% endblock %}
+
+{% block overlays %}
+    {{ super() }}
+
+<div id="edit_modal" class="modal">
+    <div class="modal-content">
+        <div class="row">
+            <div class="input-field col s12 m4">
+                <input id="login" type="text" required>
+                <label for="login" class="TR">Login</label>
+            </div>
+            <div class="input-field col s12 m8">
+                <select id="account_type_select">
+                </select>
+                <label class="TR">Account type</label>
+            </div>
+
+            <div class="input-field col s12">
+                <input id="name" type="text" required>
+                <label for="name" class="TR">User name</label>
+            </div>
+            <div class="input-field col s12 m6">
+                <input id="password" type="password">
+                <label for="password" class="TR">Password</label>
+                <i class="material-icons show_password_btn"></i>
+            </div>
+            <div class="input-field col s12 m6">
+                <input id="password2" type="password">
+                <label for="password2" class="TR">Retype password</label>
+                <i class="material-icons show_password_btn"></i>
+            </div>
+
+            <div class="input-field col s12" id="add_to_group_container">
+                <div class="chips chips-autocomplete" id="add_to_group"></div>
+
+                {#<input type="text" id="add_to_group" class="autocomplete" autocomplete="off">
+                <label for="add_to_group" class="TR">Add to group</label>
+                #}
+            </div>
+
+        </div>
+        <div class="row" style="display: none" id="error_div">
+            <div class="col s12" style="color: red" id="error_message">
+            </div>
+        </div>
+    </div>
+    <div class="modal-footer">
+        <a href="#!" class="waves-effect waves-light btn-flat left TR" id="generate_password_btn">btn.Generate password</a>
+        <a href="#!" class="modal-close waves-effect waves-light btn red darken-2 TR" id="edit_modal_delete_btn">btn.Delete</a>
+        <a href="#!" class="waves-effect waves-light btn TR" id="edit_modal_save_btn">btn.Save</a>
+        <a href="#!" class="modal-close waves-effect waves-light btn-flat TR">btn.Cancel</a>
+    </div>
+</div>
+
+<div class="fixed-action-btn">
+    <a class="btn-floating btn-large waves-effect waves-light orange accent-4" id="add_user_btn">
+        <i class="material-icons-outlined">person_add_alt</i>
+    </a>
+</div>
+
+
+{% endblock %}
+
+{% block content %}
+    {{ super() }}
+
+    <div class="container">
+        <div id="usersTable"></div>
+    </div>
+
+{% endblock %}
